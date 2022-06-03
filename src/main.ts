@@ -14,7 +14,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/yasuke-server');
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
-  // app.useGlobalFilters(new ExceptionsFilter());
+  app.useGlobalFilters(new ExceptionsFilter());
 
   await app.listen(process.env.PORT, () => {
     console.log(`app server running on PORT ${process.env.PORT}`);

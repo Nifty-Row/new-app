@@ -33,12 +33,9 @@ export class ExceptionsFilter implements ExceptionFilter {
 
     response.status(status).json({
       status: 'error',
-      data: {
-        statusCode: status,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-        error: message,
-      },
+      message: message.error,
+      statusCode: status,
+      timestamp: new Date().toISOString(),
     });
   }
 }
