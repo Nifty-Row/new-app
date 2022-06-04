@@ -61,7 +61,7 @@ export class UserService {
         } = userDetails;
 
         let userSocials;
-        let userPhoto;
+        let userPhotos;
         let photos;
 
         let user = await this.userRepository
@@ -78,8 +78,8 @@ export class UserService {
             });
 
             if (existingUserSocial) {
-              userSocials = await this.socialRepository.update(
-                { id: user.social.id },
+              await this.socialRepository.update(
+                { id: existingUserSocial.id },
                 social
               );
             } else {
@@ -100,13 +100,21 @@ export class UserService {
               displayImage,
             };
 
-            userPhoto = await this.photoRepository.update(
-              { id: user.social.id },
-              photos
-            );
+            const existingUserPhoto = await this.photoRepository.findOne({
+              id: user.photo.id,
+            });
+
+            if (existingUserPhoto) {
+              await this.photoRepository.update(
+                { id: existingUserPhoto.id },
+                photos
+              );
+            } else {
+              userPhotos = await this.photoRepository.save(photos);
+            }
           }
 
-          const updatedUser = await this.userRepository.update(
+          await this.userRepository.update(
             { id: user.id },
             {
               firstName: firstName.toLocaleLowerCase(),
@@ -123,6 +131,24 @@ export class UserService {
               webUrl,
             }
           );
+
+          if (userPhotos) {
+            await this.userRepository.update(
+              { id: user.id },
+              {
+                photo: userPhotos,
+              }
+            );
+          }
+
+          if (userSocials) {
+            await this.userRepository.update(
+              { id: user.id },
+              {
+                social: userSocials,
+              }
+            );
+          }
 
           const response = {
             data: walletAddress,

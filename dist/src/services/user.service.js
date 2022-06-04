@@ -47,7 +47,7 @@ let UserService = class UserService {
             try {
                 const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, photo, } = userDetails;
                 let userSocials;
-                let userPhoto;
+                let userPhotos;
                 let photos;
                 let user = await this.userRepository
                     .createQueryBuilder('user')
@@ -61,7 +61,7 @@ let UserService = class UserService {
                             id: user.social.id,
                         });
                         if (existingUserSocial) {
-                            userSocials = await this.socialRepository.update({ id: user.social.id }, social);
+                            await this.socialRepository.update({ id: existingUserSocial.id }, social);
                         }
                         else {
                             userSocials = await this.socialRepository.save(social);
@@ -74,9 +74,17 @@ let UserService = class UserService {
                             coverImage,
                             displayImage,
                         };
-                        userPhoto = await this.photoRepository.update({ id: user.social.id }, photos);
+                        const existingUserPhoto = await this.photoRepository.findOne({
+                            id: user.photo.id,
+                        });
+                        if (existingUserPhoto) {
+                            await this.photoRepository.update({ id: existingUserPhoto.id }, photos);
+                        }
+                        else {
+                            userPhotos = await this.photoRepository.save(photos);
+                        }
                     }
-                    const updatedUser = await this.userRepository.update({ id: user.id }, {
+                    await this.userRepository.update({ id: user.id }, {
                         firstName: firstName.toLocaleLowerCase(),
                         lastName: lastName.toLocaleLowerCase(),
                         username,
@@ -89,6 +97,16 @@ let UserService = class UserService {
                             : '',
                         webUrl,
                     });
+                    if (userPhotos) {
+                        await this.userRepository.update({ id: user.id }, {
+                            photo: userPhotos,
+                        });
+                    }
+                    if (userSocials) {
+                        await this.userRepository.update({ id: user.id }, {
+                            social: userSocials,
+                        });
+                    }
                     const response = {
                         data: walletAddress,
                     };
