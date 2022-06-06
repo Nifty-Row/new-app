@@ -6,25 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
-const contact_module_1 = require("./modules/contact.module");
-const typeorm_1 = require("@nestjs/typeorm");
+exports.ContactModule = void 0;
+const contact_service_1 = require("./../services/contact.service");
+const contant_entity_1 = require("./../models/contant.entity");
+const contact_controller_1 = require("./../controllers/contact.controller");
 const config_1 = require("@nestjs/config");
-const user_module_1 = require("./modules/user.module");
-const auth_module_1 = require("./modules/auth.module");
+const typeorm_1 = require("@nestjs/typeorm");
 const common_1 = require("@nestjs/common");
-let AppModule = class AppModule {
+let ContactModule = class ContactModule {
 };
-AppModule = __decorate([
+ContactModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            auth_module_1.AuthModule,
-            user_module_1.UserModule,
-            contact_module_1.ContactModule,
-            config_1.ConfigModule.forRoot({ isGlobal: true }),
-            typeorm_1.TypeOrmModule.forRoot(),
+            typeorm_1.TypeOrmModule.forFeature([contant_entity_1.ContactUs, contant_entity_1.Newsletter]),
+            config_1.ConfigModule.forRoot(),
         ],
+        controllers: [contact_controller_1.ContactController],
+        providers: [contact_service_1.ContactService],
     })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+], ContactModule);
+exports.ContactModule = ContactModule;
+//# sourceMappingURL=contact.module.js.map

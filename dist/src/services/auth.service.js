@@ -96,9 +96,8 @@ let AuthService = class AuthService {
             webUrl,
             photos,
         };
-        const { accessToken } = await (0, utils_1.generateFreshUserTokens)(payload);
         const response = {
-            data: Object.assign({ accessToken }, payload),
+            data: payload,
             message: 'Your account was created successfully',
             status: 'success',
         };

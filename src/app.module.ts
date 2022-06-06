@@ -1,3 +1,4 @@
+import { ContactModule } from './modules/contact.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user.module';
@@ -8,6 +9,7 @@ import { Module } from '@nestjs/common';
   imports: [
     AuthModule,
     UserModule,
+    ContactModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(),
   ],

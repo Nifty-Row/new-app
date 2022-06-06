@@ -34,7 +34,7 @@ let ExceptionsFilter = ExceptionsFilter_1 = class ExceptionsFilter {
         }
         response.status(status).json({
             status: 'error',
-            message: message.error,
+            message: message,
             statusCode: status,
             timestamp: new Date().toISOString(),
         });

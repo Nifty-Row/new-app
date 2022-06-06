@@ -33,7 +33,7 @@ export class ExceptionsFilter implements ExceptionFilter {
 
     response.status(status).json({
       status: 'error',
-      message: message.error,
+      message: message,
       statusCode: status,
       timestamp: new Date().toISOString(),
     });

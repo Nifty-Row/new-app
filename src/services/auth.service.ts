@@ -3,12 +3,7 @@ import { ImageService } from '../services/image.service';
 import { UserPhoto } from './../models/userPhoto.entity';
 import { Social } from './../models/social.entity';
 import { UserService } from './user.service';
-import {
-  hashPassword,
-  generateFreshUserTokens,
-  comparePassword,
-  Response,
-} from './../../utils';
+import { hashPassword, comparePassword, Response } from './../../utils';
 import { User } from './../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -118,10 +113,8 @@ export class AuthService {
       photos,
     };
 
-    const { accessToken } = await generateFreshUserTokens(payload);
-
     const response = {
-      data: { accessToken, ...payload },
+      data: payload,
       message: 'Your account was created successfully',
       status: 'success',
     };

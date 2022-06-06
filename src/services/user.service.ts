@@ -1,3 +1,4 @@
+import { AuthService } from './auth.service';
 import { hashPassword } from './../../utils';
 import { createUserDto } from './../validators/authValidator';
 import { UserPhoto } from './../models/userPhoto.entity';
@@ -17,7 +18,10 @@ export class UserService {
   private userFollower: Repository<UserFollower>;
   @InjectRepository(UserPhoto) photoRepository: Repository<UserPhoto>;
 
-  constructor(private imageService: ImageService) {}
+  constructor(
+    private imageService: ImageService,
+    private authService: AuthService
+  ) {}
 
   async findOne(userWalletAddress: string): Promise<User> {
     return new Promise(async (resolve, reject) => {
@@ -71,92 +75,97 @@ export class UserService {
           .leftJoinAndSelect('user.social', 'social')
           .getOne();
 
-        if (user) {
-          if (social) {
-            const existingUserSocial = await this.socialRepository.findOne({
-              id: user.social.id,
-            });
+        if (!user) {
+          const { message, status, data } = await this.authService.register(
+            userDetails
+          );
 
-            if (existingUserSocial) {
-              await this.socialRepository.update(
-                { id: existingUserSocial.id },
-                social
-              );
-            } else {
-              userSocials = await this.socialRepository.save(social);
-            }
-          }
+          if (status == 'failed') reject({ message });
 
-          if (photo) {
-            const displayImage: string =
-              await this.imageService.uploadAssetImage(photo.displayImage);
+          resolve({ message, status, data });
+        }
 
-            const coverImage: string = await this.imageService.uploadAssetImage(
-              photo.coverImage
+        if (social) {
+          const existingUserSocial = await this.socialRepository.findOne({
+            id: user.social.id,
+          });
+
+          if (existingUserSocial) {
+            await this.socialRepository.update(
+              { id: existingUserSocial.id },
+              social
             );
-
-            photos = {
-              coverImage,
-              displayImage,
-            };
-
-            const existingUserPhoto = await this.photoRepository.findOne({
-              id: user.photo.id,
-            });
-
-            if (existingUserPhoto) {
-              await this.photoRepository.update(
-                { id: existingUserPhoto.id },
-                photos
-              );
-            } else {
-              userPhotos = await this.photoRepository.save(photos);
-            }
+          } else {
+            userSocials = await this.socialRepository.save(social);
           }
+        }
 
+        if (photo) {
+          const displayImage: string = await this.imageService.uploadAssetImage(
+            photo.displayImage
+          );
+
+          const coverImage: string = await this.imageService.uploadAssetImage(
+            photo.coverImage
+          );
+
+          photos = {
+            coverImage,
+            displayImage,
+          };
+
+          const existingUserPhoto = await this.photoRepository.findOne({
+            id: user.photo.id,
+          });
+
+          if (existingUserPhoto) {
+            await this.photoRepository.update(
+              { id: existingUserPhoto.id },
+              photos
+            );
+          } else {
+            userPhotos = await this.photoRepository.save(photos);
+          }
+        }
+
+        await this.userRepository.update(
+          { id: user.id },
+          {
+            firstName: firstName.toLocaleLowerCase(),
+            lastName: lastName.toLocaleLowerCase(),
+            username,
+            email: email.toLocaleLowerCase(),
+            walletAddress,
+            about,
+            type: type ? type : 'fait-user',
+            password:
+              password != '' || password != null ? hashPassword(password) : '',
+            webUrl,
+          }
+        );
+
+        if (userPhotos) {
           await this.userRepository.update(
             { id: user.id },
             {
-              firstName: firstName.toLocaleLowerCase(),
-              lastName: lastName.toLocaleLowerCase(),
-              username,
-              email: email.toLocaleLowerCase(),
-              walletAddress,
-              about,
-              type: type ? type : 'fait-user',
-              password:
-                password != '' || password != null
-                  ? hashPassword(password)
-                  : '',
-              webUrl,
+              photo: userPhotos,
             }
           );
-
-          if (userPhotos) {
-            await this.userRepository.update(
-              { id: user.id },
-              {
-                photo: userPhotos,
-              }
-            );
-          }
-
-          if (userSocials) {
-            await this.userRepository.update(
-              { id: user.id },
-              {
-                social: userSocials,
-              }
-            );
-          }
-
-          const response = {
-            data: walletAddress,
-          };
-          resolve(response);
         }
 
-        reject({ error: 'user does not exist' });
+        if (userSocials) {
+          await this.userRepository.update(
+            { id: user.id },
+            {
+              social: userSocials,
+            }
+          );
+        }
+
+        const response = {
+          data: walletAddress,
+        };
+        resolve(response);
       } catch (error) {
         reject(error);
       }
