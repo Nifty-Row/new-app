@@ -11,22 +11,22 @@ export class Social {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   telegramUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   facebookUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   twitterUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   youtubeUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   pinterestUrl: string;
 
-  @Column()
+  @Column({ nullable: true })
   discordUrl: string;
 
   @CreateDateColumn()
