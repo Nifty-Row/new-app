@@ -48,14 +48,6 @@ export class User {
   @Column({ nullable: true })
   webUrl: string;
 
-  @OneToOne(() => Social)
-  @JoinColumn()
-  social: Social;
-
-  @OneToOne(() => UserPhoto)
-  @JoinColumn()
-  photo: UserPhoto;
-
   @CreateDateColumn()
   created_at: Date;
 

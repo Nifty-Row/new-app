@@ -18,6 +18,10 @@ __decorate([
     __metadata("design:type", Number)
 ], UserPhoto.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, unique: true }),
+    __metadata("design:type", String)
+], UserPhoto.prototype, "walletAddress", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserPhoto.prototype, "displayImage", void 0);

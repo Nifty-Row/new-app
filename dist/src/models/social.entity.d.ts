@@ -1,5 +1,6 @@
 export declare class Social {
     id: number;
+    walletAddress: string;
     telegramUrl: string;
     facebookUrl: string;
     twitterUrl: string;

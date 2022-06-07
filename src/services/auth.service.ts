@@ -42,6 +42,10 @@ export class AuthService {
 
     let joinDate = new Date();
 
+    let userSocials;
+    let userPhoto;
+    let photos;
+
     if (!password)
       return {
         data: [],
@@ -67,22 +71,30 @@ export class AuthService {
         status: 'failed',
       };
 
-    const userSocials = await this.socialRepository.save(social);
+    if (social) {
+      userSocials = await this.socialRepository.save({
+        walletAddress,
+        ...social,
+      });
+    }
 
-    const displayImage: string = await this.imageService.uploadAssetImage(
-      photo.displayImage
-    );
+    if (photo) {
+      const displayImage: string = await this.imageService.uploadAssetImage(
+        photo.displayImage
+      );
 
-    const coverImage: string = await this.imageService.uploadAssetImage(
-      photo.coverImage
-    );
+      const coverImage: string = await this.imageService.uploadAssetImage(
+        photo.coverImage
+      );
 
-    const photos = {
-      coverImage,
-      displayImage,
-    };
+      photos = {
+        walletAddress,
+        coverImage,
+        displayImage,
+      };
 
-    const userPhoto = await this.photoRepository.save(photos);
+      userPhoto = await this.photoRepository.save(photos);
+    }
 
     const user = await this.userRepository.save({
       firstName: firstName.toLocaleLowerCase(),
@@ -95,8 +107,6 @@ export class AuthService {
       type,
       joinDate,
       webUrl,
-      social: userSocials,
-      photo: userPhoto,
     });
 
     const payload = {
@@ -124,10 +134,8 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { ...user, sub: user.id };
     return {
-      access_token: this.jwtService.sign(payload),
-      ...user,
+      walletAddress: user.walletAddress,
     };
   }
 

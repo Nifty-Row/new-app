@@ -43,6 +43,9 @@ let AuthService = class AuthService {
     async register(userDetails) {
         const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, photo, } = userDetails;
         let joinDate = new Date();
+        let userSocials;
+        let userPhoto;
+        let photos;
         if (!password)
             return {
                 data: [],
@@ -63,14 +66,19 @@ let AuthService = class AuthService {
                 message: 'username already taken',
                 status: 'failed',
             };
-        const userSocials = await this.socialRepository.save(social);
-        const displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
-        const coverImage = await this.imageService.uploadAssetImage(photo.coverImage);
-        const photos = {
-            coverImage,
-            displayImage,
-        };
-        const userPhoto = await this.photoRepository.save(photos);
+        if (social) {
+            userSocials = await this.socialRepository.save(Object.assign({ walletAddress }, social));
+        }
+        if (photo) {
+            const displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
+            const coverImage = await this.imageService.uploadAssetImage(photo.coverImage);
+            photos = {
+                walletAddress,
+                coverImage,
+                displayImage,
+            };
+            userPhoto = await this.photoRepository.save(photos);
+        }
         const user = await this.userRepository.save({
             firstName: firstName.toLocaleLowerCase(),
             lastName: lastName.toLocaleLowerCase(),
@@ -82,8 +90,6 @@ let AuthService = class AuthService {
             type,
             joinDate,
             webUrl,
-            social: userSocials,
-            photo: userPhoto,
         });
         const payload = {
             id: user.id,
@@ -107,8 +113,9 @@ let AuthService = class AuthService {
         return response;
     }
     async login(user) {
-        const payload = Object.assign(Object.assign({}, user), { sub: user.id });
-        return Object.assign({ access_token: this.jwtService.sign(payload) }, user);
+        return {
+            walletAddress: user.walletAddress,
+        };
     }
     async validateUser(email, password) {
         const user = await this.userService.findOne(email);

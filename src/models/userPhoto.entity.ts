@@ -11,6 +11,9 @@ export class UserPhoto {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: 'varchar', length: 255, unique: true })
+  walletAddress: string;
+
   @Column()
   displayImage: string;
 

@@ -1,5 +1,3 @@
-import { UserPhoto } from './userPhoto.entity';
-import { Social } from './social.entity';
 export declare class User {
     id: number;
     username: string;
@@ -13,8 +11,6 @@ export declare class User {
     about: string;
     joinDate: Date;
     webUrl: string;
-    social: Social;
-    photo: UserPhoto;
     created_at: Date;
     updated_at: Date;
 }

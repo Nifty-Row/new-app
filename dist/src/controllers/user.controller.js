@@ -13,7 +13,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
-const user_entity_1 = require("./../models/user.entity");
+const authValidator_1 = require("./../validators/authValidator");
 const utils_1 = require("../../utils");
 const user_service_1 = require("../services/user.service");
 const common_1 = require("@nestjs/common");
@@ -53,7 +53,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('userWalletAddress')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.User, String]),
+    __metadata("design:paramtypes", [authValidator_1.createUserDto, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([

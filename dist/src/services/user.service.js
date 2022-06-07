@@ -33,9 +33,9 @@ let UserService = class UserService {
             try {
                 const userProfile = await this.userRepository
                     .createQueryBuilder('user')
-                    .where('walletAddress = :wa', { wa: userWalletAddress })
-                    .leftJoinAndSelect('user.social', 'social')
-                    .leftJoinAndSelect('user.photo', 'photo')
+                    .where('user.walletAddress = :wa', { wa: userWalletAddress })
+                    .leftJoinAndMapOne('user.social', social_entity_1.Social, 'social', 'social.walletAddress = user.walletAddress')
+                    .leftJoinAndMapOne('user.photo', userPhoto_entity_1.UserPhoto, 'photo', 'photo.walletAddress = user.walletAddress')
                     .getOne();
                 if (!userProfile) {
                     reject({ error: 'user does not exist' });
@@ -51,14 +51,10 @@ let UserService = class UserService {
         return new Promise(async (resolve, reject) => {
             try {
                 const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, photo, } = userDetails;
-                let userSocials;
-                let userPhotos;
                 let photos;
                 let user = await this.userRepository
                     .createQueryBuilder('user')
                     .where('walletAddress = :wa', { wa: userWalletAddress })
-                    .leftJoinAndSelect('user.photo', 'photo')
-                    .leftJoinAndSelect('user.social', 'social')
                     .getOne();
                 if (!user) {
                     const { message, status, data } = await this.authService.register(userDetails);
@@ -67,15 +63,7 @@ let UserService = class UserService {
                     resolve({ message, status, data });
                 }
                 if (social) {
-                    const existingUserSocial = await this.socialRepository.findOne({
-                        id: user.social.id,
-                    });
-                    if (existingUserSocial) {
-                        await this.socialRepository.update({ id: existingUserSocial.id }, social);
-                    }
-                    else {
-                        userSocials = await this.socialRepository.save(social);
-                    }
+                    await this.socialRepository.update({ walletAddress }, social);
                 }
                 if (photo) {
                     const displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
@@ -84,15 +72,7 @@ let UserService = class UserService {
                         coverImage,
                         displayImage,
                     };
-                    const existingUserPhoto = await this.photoRepository.findOne({
-                        id: user.photo.id,
-                    });
-                    if (existingUserPhoto) {
-                        await this.photoRepository.update({ id: existingUserPhoto.id }, photos);
-                    }
-                    else {
-                        userPhotos = await this.photoRepository.save(photos);
-                    }
+                    await this.photoRepository.update({ walletAddress }, photos);
                 }
                 await this.userRepository.update({ id: user.id }, {
                     firstName: firstName.toLocaleLowerCase(),
@@ -105,16 +85,6 @@ let UserService = class UserService {
                     password: password != '' || password != null ? (0, utils_1.hashPassword)(password) : '',
                     webUrl,
                 });
-                if (userPhotos) {
-                    await this.userRepository.update({ id: user.id }, {
-                        photo: userPhotos,
-                    });
-                }
-                if (userSocials) {
-                    await this.userRepository.update({ id: user.id }, {
-                        social: userSocials,
-                    });
-                }
                 const response = {
                     data: walletAddress,
                 };

@@ -10,9 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const userPhoto_entity_1 = require("./userPhoto.entity");
 const typeorm_1 = require("typeorm");
-const social_entity_1 = require("./social.entity");
 let User = class User {
 };
 __decorate([
@@ -63,16 +61,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "webUrl", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => social_entity_1.Social),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", social_entity_1.Social)
-], User.prototype, "social", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => userPhoto_entity_1.UserPhoto),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", userPhoto_entity_1.UserPhoto)
-], User.prototype, "photo", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

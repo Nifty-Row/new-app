@@ -11,6 +11,9 @@ export class Social {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: 'varchar', length: 255, unique: true })
+  walletAddress: string;
+
   @Column({ nullable: true })
   telegramUrl: string;
 

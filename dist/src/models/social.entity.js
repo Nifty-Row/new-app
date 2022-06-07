@@ -18,6 +18,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Social.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255, unique: true }),
+    __metadata("design:type", String)
+], Social.prototype, "walletAddress", void 0);
+__decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Social.prototype, "telegramUrl", void 0);

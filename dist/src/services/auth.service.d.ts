@@ -17,23 +17,7 @@ export declare class AuthService {
     constructor(userService: UserService, jwtService: JwtService, imageService: ImageService);
     register(userDetails: createUserDto): Promise<Response>;
     login(user: User): Promise<{
-        id: number;
-        username: string;
-        firstName: string;
-        lastName: string;
-        isActive: boolean;
-        email: string;
-        password: string;
         walletAddress: string;
-        type: string;
-        about: string;
-        joinDate: Date;
-        webUrl: string;
-        social: Social;
-        photo: UserPhoto;
-        created_at: Date;
-        updated_at: Date;
-        access_token: string;
     }>;
     validateUser(email: string, password: string): Promise<any>;
 }

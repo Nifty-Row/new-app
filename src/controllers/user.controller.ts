@@ -1,12 +1,10 @@
-import { User } from './../models/user.entity';
-import { JwtAuthGuard } from './../guards/jwt-auth.guard';
+import { createUserDto } from './../validators/authValidator';
 import { ResponseUtils, Response } from '../../utils';
 import { UserService } from '../services/user.service';
 import {
   Controller,
   Post,
   Get,
-  UseGuards,
   Request,
   Body,
   Param,
@@ -36,7 +34,7 @@ export class UserController {
 
   @Put('/:userWalletAddress')
   async update(
-    @Body() user: User,
+    @Body() user: createUserDto,
     @Param('userWalletAddress') userWalletAddress: string
   ): Promise<Response> {
     return ResponseUtils.getSuccessResponse(
