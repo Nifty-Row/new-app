@@ -71,6 +71,19 @@ export class AuthService {
         status: 'failed',
       };
 
+    const user = await this.userRepository.save({
+      firstName: firstName.toLocaleLowerCase(),
+      lastName: lastName.toLocaleLowerCase(),
+      username,
+      email: email.toLocaleLowerCase(),
+      password: hashPassword(password),
+      walletAddress,
+      about,
+      type,
+      joinDate,
+      webUrl,
+    });
+
     if (social) {
       userSocials = await this.socialRepository.save({
         walletAddress,
@@ -95,19 +108,6 @@ export class AuthService {
 
       userPhoto = await this.photoRepository.save(photos);
     }
-
-    const user = await this.userRepository.save({
-      firstName: firstName.toLocaleLowerCase(),
-      lastName: lastName.toLocaleLowerCase(),
-      username,
-      email: email.toLocaleLowerCase(),
-      password: hashPassword(password),
-      walletAddress,
-      about,
-      type,
-      joinDate,
-      webUrl,
-    });
 
     const payload = {
       id: user.id,

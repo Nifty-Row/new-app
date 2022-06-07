@@ -66,6 +66,18 @@ let AuthService = class AuthService {
                 message: 'username already taken',
                 status: 'failed',
             };
+        const user = await this.userRepository.save({
+            firstName: firstName.toLocaleLowerCase(),
+            lastName: lastName.toLocaleLowerCase(),
+            username,
+            email: email.toLocaleLowerCase(),
+            password: (0, utils_1.hashPassword)(password),
+            walletAddress,
+            about,
+            type,
+            joinDate,
+            webUrl,
+        });
         if (social) {
             userSocials = await this.socialRepository.save(Object.assign({ walletAddress }, social));
         }
@@ -79,18 +91,6 @@ let AuthService = class AuthService {
             };
             userPhoto = await this.photoRepository.save(photos);
         }
-        const user = await this.userRepository.save({
-            firstName: firstName.toLocaleLowerCase(),
-            lastName: lastName.toLocaleLowerCase(),
-            username,
-            email: email.toLocaleLowerCase(),
-            password: (0, utils_1.hashPassword)(password),
-            walletAddress,
-            about,
-            type,
-            joinDate,
-            webUrl,
-        });
         const payload = {
             id: user.id,
             firstName: user.firstName,
