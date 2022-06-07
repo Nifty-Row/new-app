@@ -1,4 +1,4 @@
-import { AuthService } from './auth.service';
+import { AuthService } from '../services/auth.service';
 import { hashPassword } from './../../utils';
 import { createUserDto } from './../validators/authValidator';
 import { UserPhoto } from './../models/userPhoto.entity';
@@ -6,7 +6,7 @@ import { ImageService } from '../services/image.service';
 import { UserFollower } from './../models/userFollower.entity';
 import { Social } from './../models/social.entity';
 import { User } from './../models/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -20,7 +20,8 @@ export class UserService {
 
   constructor(
     private imageService: ImageService,
-    private authService: AuthService
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService
   ) {}
 
   async findOne(userWalletAddress: string): Promise<User> {

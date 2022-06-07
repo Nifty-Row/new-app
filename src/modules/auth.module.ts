@@ -8,16 +8,16 @@ import { LocalStrategy } from './../../configs/local.strategy';
 import { UserModule } from './user.module';
 import { User } from './../models/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthService } from './../services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { AuthController } from './../controllers/auth.controller';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Social, UserPhoto]),
     ConfigModule.forRoot(),
-    UserModule,
+    forwardRef(() => UserModule),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
@@ -26,5 +26,6 @@ import { PassportModule } from '@nestjs/passport';
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy, ImageService],
+  exports: [AuthService, ImageService],
 })
 export class AuthModule {}

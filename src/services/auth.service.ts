@@ -6,7 +6,7 @@ import { UserService } from './user.service';
 import { hashPassword, comparePassword, Response } from './../../utils';
 import { User } from './../models/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 
@@ -19,6 +19,7 @@ export class AuthService {
   @InjectRepository(UserPhoto) photoRepository: Repository<UserPhoto>;
 
   constructor(
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
     private jwtService: JwtService,
     private imageService: ImageService

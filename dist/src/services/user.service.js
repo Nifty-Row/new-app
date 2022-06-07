@@ -8,9 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
-const auth_service_1 = require("./auth.service");
+const auth_service_1 = require("../services/auth.service");
 const utils_1 = require("./../../utils");
 const userPhoto_entity_1 = require("./../models/userPhoto.entity");
 const image_service_1 = require("../services/image.service");
@@ -162,6 +165,7 @@ __decorate([
 ], UserService.prototype, "photoRepository", void 0);
 UserService = __decorate([
     (0, common_1.Injectable)(),
+    __param(1, (0, common_1.Inject)((0, common_1.forwardRef)(() => auth_service_1.AuthService))),
     __metadata("design:paramtypes", [image_service_1.ImageService,
         auth_service_1.AuthService])
 ], UserService);

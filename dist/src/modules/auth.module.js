@@ -17,7 +17,7 @@ const local_strategy_1 = require("./../../configs/local.strategy");
 const user_module_1 = require("./user.module");
 const user_entity_1 = require("./../models/user.entity");
 const typeorm_1 = require("@nestjs/typeorm");
-const auth_service_1 = require("./../services/auth.service");
+const auth_service_1 = require("../services/auth.service");
 const auth_controller_1 = require("./../controllers/auth.controller");
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
@@ -28,7 +28,7 @@ AuthModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, social_entity_1.Social, userPhoto_entity_1.UserPhoto]),
             config_1.ConfigModule.forRoot(),
-            user_module_1.UserModule,
+            (0, common_1.forwardRef)(() => user_module_1.UserModule),
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET,
@@ -37,6 +37,7 @@ AuthModule = __decorate([
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy, image_service_1.ImageService],
+        exports: [auth_service_1.AuthService, image_service_1.ImageService],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;
