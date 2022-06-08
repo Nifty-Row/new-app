@@ -56,6 +56,10 @@ let UserService = class UserService {
                     .createQueryBuilder('user')
                     .where('walletAddress = :wa', { wa: userWalletAddress })
                     .getOne();
+                let userPhotos = await this.photoRepository
+                    .createQueryBuilder('userPhoto')
+                    .where('walletAddress = :wa', { wa: userWalletAddress })
+                    .getOne();
                 if (!user) {
                     const { message, status, data } = await this.authService.register(userDetails);
                     if (status == 'failed')
@@ -66,11 +70,13 @@ let UserService = class UserService {
                     await this.socialRepository.update({ walletAddress }, social);
                 }
                 if (photo) {
-                    const displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
-                    const coverImage = await this.imageService.uploadAssetImage(photo.coverImage);
+                    let displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
+                    let coverImage = await this.imageService.uploadAssetImage(photo.coverImage);
                     photos = {
-                        coverImage,
-                        displayImage,
+                        coverImage: coverImage == '11111111111' ? userPhotos.coverImage : coverImage,
+                        displayImage: displayImage == '11111111111'
+                            ? userPhotos.displayImage
+                            : displayImage,
                     };
                     await this.photoRepository.update({ walletAddress }, photos);
                 }
@@ -81,7 +87,7 @@ let UserService = class UserService {
                     email: email.toLocaleLowerCase(),
                     walletAddress,
                     about,
-                    type: type ? type : 'fait-user',
+                    type: type ? type : 'fiat-user',
                     password: password != '' || password != null ? (0, utils_1.hashPassword)(password) : '',
                     webUrl,
                 });

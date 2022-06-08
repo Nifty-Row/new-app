@@ -82,6 +82,11 @@ export class UserService {
           .where('walletAddress = :wa', { wa: userWalletAddress })
           .getOne();
 
+        let userPhotos = await this.photoRepository
+          .createQueryBuilder('userPhoto')
+          .where('walletAddress = :wa', { wa: userWalletAddress })
+          .getOne();
+
         if (!user) {
           const { message, status, data } = await this.authService.register(
             userDetails
@@ -97,17 +102,21 @@ export class UserService {
         }
 
         if (photo) {
-          const displayImage: string = await this.imageService.uploadAssetImage(
+          let displayImage = await this.imageService.uploadAssetImage(
             photo.displayImage
           );
 
-          const coverImage: string = await this.imageService.uploadAssetImage(
+          let coverImage = await this.imageService.uploadAssetImage(
             photo.coverImage
           );
 
           photos = {
-            coverImage,
-            displayImage,
+            coverImage:
+              coverImage == '11111111111' ? userPhotos.coverImage : coverImage,
+            displayImage:
+              displayImage == '11111111111'
+                ? userPhotos.displayImage
+                : displayImage,
           };
 
           await this.photoRepository.update({ walletAddress }, photos);
@@ -122,7 +131,7 @@ export class UserService {
             email: email.toLocaleLowerCase(),
             walletAddress,
             about,
-            type: type ? type : 'fait-user',
+            type: type ? type : 'fiat-user',
             password:
               password != '' || password != null ? hashPassword(password) : '',
             webUrl,
