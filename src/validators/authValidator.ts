@@ -9,7 +9,7 @@ import {
   IsUrl,
   Matches,
 } from 'class-validator';
-import { UserPhoto, UserSocial } from 'src/interfaces';
+import { UserSocial } from 'src/interfaces';
 
 export class createUserDto {
   @IsNotEmpty()
@@ -44,10 +44,6 @@ export class createUserDto {
   @IsNotEmptyObject()
   @IsObject()
   social: UserSocial;
-
-  @IsNotEmptyObject()
-  @IsObject()
-  photo: UserPhoto;
 
   password?: string;
 

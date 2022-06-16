@@ -30,6 +30,9 @@ let UserController = class UserController {
     async update(user, userWalletAddress) {
         return utils_1.ResponseUtils.getSuccessResponse(await this.userService.update(userWalletAddress, user), 'Your profile was updated successfully');
     }
+    async updateProfileImages(images, userWalletAddress) {
+        return utils_1.ResponseUtils.getSuccessResponse(await this.userService.uploadProfilePicture(userWalletAddress, images), 'Your profile picture was updated successfully');
+    }
     async follow(followUserAddress, req, userWalletAddress) {
         return utils_1.ResponseUtils.getSuccessResponse(await this.userService.follow(userWalletAddress, followUserAddress));
     }
@@ -56,6 +59,14 @@ __decorate([
     __metadata("design:paramtypes", [authValidator_1.createUserDto, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
+__decorate([
+    (0, common_1.Put)('/:userWalletAddress/profile-pic'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)('userWalletAddress')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateProfileImages", null);
 __decorate([
     (0, common_1.Post)('follow/:followUserAddress'),
     __param(0, (0, common_1.Param)('followUserAddress')),

@@ -54,11 +54,6 @@ __decorate([
     (0, class_validator_1.IsObject)(),
     __metadata("design:type", Object)
 ], createUserDto.prototype, "social", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmptyObject)(),
-    (0, class_validator_1.IsObject)(),
-    __metadata("design:type", Object)
-], createUserDto.prototype, "photo", void 0);
 exports.createUserDto = createUserDto;
 class loginUserDto {
 }

@@ -14,10 +14,10 @@ export class UserPhoto {
   @Column({ type: 'varchar', length: 255, unique: true })
   walletAddress: string;
 
-  @Column()
+  @Column({ nullable: true })
   displayImage: string;
 
-  @Column()
+  @Column({ nullable: true })
   coverImage: string;
 
   @CreateDateColumn()

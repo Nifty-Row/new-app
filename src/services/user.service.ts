@@ -1,3 +1,4 @@
+import { UserPhoto as UserPhotoInterface } from 'src/interfaces';
 import { AuthService } from '../services/auth.service';
 import { hashPassword } from './../../utils';
 import { createUserDto } from './../validators/authValidator';
@@ -72,18 +73,10 @@ export class UserService {
           type,
           social,
           webUrl,
-          photo,
         } = userDetails;
-
-        let photos;
 
         let user = await this.userRepository
           .createQueryBuilder('user')
-          .where('walletAddress = :wa', { wa: userWalletAddress })
-          .getOne();
-
-        let userPhotos = await this.photoRepository
-          .createQueryBuilder('userPhoto')
           .where('walletAddress = :wa', { wa: userWalletAddress })
           .getOne();
 
@@ -99,27 +92,6 @@ export class UserService {
 
         if (social) {
           await this.socialRepository.update({ walletAddress }, social);
-        }
-
-        if (photo) {
-          let displayImage = await this.imageService.uploadAssetImage(
-            photo.displayImage
-          );
-
-          let coverImage = await this.imageService.uploadAssetImage(
-            photo.coverImage
-          );
-
-          photos = {
-            coverImage:
-              coverImage == '11111111111' ? userPhotos.coverImage : coverImage,
-            displayImage:
-              displayImage == '11111111111'
-                ? userPhotos.displayImage
-                : displayImage,
-          };
-
-          await this.photoRepository.update({ walletAddress }, photos);
         }
 
         await this.userRepository.update(
@@ -174,5 +146,61 @@ export class UserService {
         reject(error);
       }
     });
+  }
+
+  async uploadProfilePicture(
+    walletAddress: string,
+    images: UserPhotoInterface
+  ): Promise<{ coverImageUrl: string; displayImageUrl: string }> {
+    let userCurrentPhotos = await this.photoRepository
+      .createQueryBuilder('userPhoto')
+      .where('walletAddress = :wa', { wa: walletAddress })
+      .getOne();
+
+    const { displayImage, coverImage } = images;
+
+    let coverImageUrl = null;
+    let displayImageUrl = null;
+
+    if (!userCurrentPhotos) {
+      if (coverImage) {
+        coverImageUrl = await this.imageService.uploadAssetImage(coverImage);
+      }
+
+      if (displayImage) {
+        displayImageUrl = await this.imageService.uploadAssetImage(
+          displayImage
+        );
+      }
+
+      await this.photoRepository.save({
+        walletAddress,
+        coverImage: coverImageUrl,
+        displayImage: displayImageUrl,
+      });
+    } else {
+      if (coverImage) {
+        coverImageUrl = await this.imageService.uploadAssetImage(coverImage);
+      } else {
+        coverImageUrl = userCurrentPhotos.coverImage;
+      }
+
+      if (displayImage) {
+        displayImageUrl = await this.imageService.uploadAssetImage(
+          displayImage
+        );
+      } else {
+        displayImageUrl = userCurrentPhotos.displayImage;
+      }
+
+      await this.photoRepository.update(
+        {
+          walletAddress,
+        },
+        { coverImage: coverImageUrl, displayImage: displayImageUrl }
+      );
+    }
+
+    return { coverImageUrl, displayImageUrl };
   }
 }

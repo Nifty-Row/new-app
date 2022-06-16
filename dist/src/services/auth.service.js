@@ -41,11 +41,9 @@ let AuthService = class AuthService {
         this.imageService = imageService;
     }
     async register(userDetails) {
-        const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, photo, } = userDetails;
+        const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, } = userDetails;
         let joinDate = new Date();
         let userSocials;
-        let userPhoto;
-        let photos;
         if (!password)
             return {
                 data: [],
@@ -81,16 +79,6 @@ let AuthService = class AuthService {
         if (social) {
             userSocials = await this.socialRepository.save(Object.assign({ walletAddress }, social));
         }
-        if (photo) {
-            const displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
-            const coverImage = await this.imageService.uploadAssetImage(photo.coverImage);
-            photos = {
-                walletAddress,
-                coverImage,
-                displayImage,
-            };
-            userPhoto = await this.photoRepository.save(photos);
-        }
         const payload = {
             id: user.id,
             firstName: user.firstName,
@@ -103,7 +91,6 @@ let AuthService = class AuthService {
             about,
             social,
             webUrl,
-            photos,
         };
         const response = {
             data: payload,

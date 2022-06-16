@@ -22,7 +22,7 @@ export class ExceptionsFilter implements ExceptionFilter {
       message = exception.message;
     }
     if (exception.response) {
-      message = exception.response.message;
+      message = exception.response;
     }
 
     if (message.indexOf !== undefined) {

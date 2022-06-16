@@ -37,14 +37,11 @@ export class AuthService {
       type,
       social,
       webUrl,
-      photo,
     } = userDetails;
 
     let joinDate = new Date();
 
     let userSocials;
-    let userPhoto;
-    let photos;
 
     if (!password)
       return {
@@ -91,24 +88,6 @@ export class AuthService {
       });
     }
 
-    if (photo) {
-      const displayImage: string = await this.imageService.uploadAssetImage(
-        photo.displayImage
-      );
-
-      const coverImage: string = await this.imageService.uploadAssetImage(
-        photo.coverImage
-      );
-
-      photos = {
-        walletAddress,
-        coverImage,
-        displayImage,
-      };
-
-      userPhoto = await this.photoRepository.save(photos);
-    }
-
     const payload = {
       id: user.id,
       firstName: user.firstName,
@@ -121,7 +100,6 @@ export class AuthService {
       about,
       social,
       webUrl,
-      photos,
     };
 
     const response = {

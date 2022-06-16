@@ -22,11 +22,11 @@ __decorate([
     __metadata("design:type", String)
 ], UserPhoto.prototype, "walletAddress", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], UserPhoto.prototype, "displayImage", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], UserPhoto.prototype, "coverImage", void 0);
 __decorate([

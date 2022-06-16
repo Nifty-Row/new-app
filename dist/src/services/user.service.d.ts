@@ -1,3 +1,4 @@
+import { UserPhoto as UserPhotoInterface } from 'src/interfaces';
 import { AuthService } from '../services/auth.service';
 import { createUserDto } from './../validators/authValidator';
 import { UserPhoto } from './../models/userPhoto.entity';
@@ -15,4 +16,8 @@ export declare class UserService {
     findOne(userWalletAddress: string): Promise<User>;
     update(userWalletAddress: string, userDetails: createUserDto): Promise<object>;
     follow(userAddress: string, followUserAddress: string): Promise<string>;
+    uploadProfilePicture(walletAddress: string, images: UserPhotoInterface): Promise<{
+        coverImageUrl: string;
+        displayImageUrl: string;
+    }>;
 }

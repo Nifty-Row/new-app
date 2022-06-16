@@ -50,14 +50,9 @@ let UserService = class UserService {
     async update(userWalletAddress, userDetails) {
         return new Promise(async (resolve, reject) => {
             try {
-                const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, photo, } = userDetails;
-                let photos;
+                const { firstName, lastName, username, email, password, walletAddress, about, type, social, webUrl, } = userDetails;
                 let user = await this.userRepository
                     .createQueryBuilder('user')
-                    .where('walletAddress = :wa', { wa: userWalletAddress })
-                    .getOne();
-                let userPhotos = await this.photoRepository
-                    .createQueryBuilder('userPhoto')
                     .where('walletAddress = :wa', { wa: userWalletAddress })
                     .getOne();
                 if (!user) {
@@ -68,17 +63,6 @@ let UserService = class UserService {
                 }
                 if (social) {
                     await this.socialRepository.update({ walletAddress }, social);
-                }
-                if (photo) {
-                    let displayImage = await this.imageService.uploadAssetImage(photo.displayImage);
-                    let coverImage = await this.imageService.uploadAssetImage(photo.coverImage);
-                    photos = {
-                        coverImage: coverImage == '11111111111' ? userPhotos.coverImage : coverImage,
-                        displayImage: displayImage == '11111111111'
-                            ? userPhotos.displayImage
-                            : displayImage,
-                    };
-                    await this.photoRepository.update({ walletAddress }, photos);
                 }
                 await this.userRepository.update({ id: user.id }, {
                     firstName: firstName.toLocaleLowerCase(),
@@ -121,6 +105,46 @@ let UserService = class UserService {
                 reject(error);
             }
         });
+    }
+    async uploadProfilePicture(walletAddress, images) {
+        let userCurrentPhotos = await this.photoRepository
+            .createQueryBuilder('userPhoto')
+            .where('walletAddress = :wa', { wa: walletAddress })
+            .getOne();
+        const { displayImage, coverImage } = images;
+        let coverImageUrl = null;
+        let displayImageUrl = null;
+        if (!userCurrentPhotos) {
+            if (coverImage) {
+                coverImageUrl = await this.imageService.uploadAssetImage(coverImage);
+            }
+            if (displayImage) {
+                displayImageUrl = await this.imageService.uploadAssetImage(displayImage);
+            }
+            await this.photoRepository.save({
+                walletAddress,
+                coverImage: coverImageUrl,
+                displayImage: displayImageUrl,
+            });
+        }
+        else {
+            if (coverImage) {
+                coverImageUrl = await this.imageService.uploadAssetImage(coverImage);
+            }
+            else {
+                coverImageUrl = userCurrentPhotos.coverImage;
+            }
+            if (displayImage) {
+                displayImageUrl = await this.imageService.uploadAssetImage(displayImage);
+            }
+            else {
+                displayImageUrl = userCurrentPhotos.displayImage;
+            }
+            await this.photoRepository.update({
+                walletAddress,
+            }, { coverImage: coverImageUrl, displayImage: displayImageUrl });
+        }
+        return { coverImageUrl, displayImageUrl };
     }
 };
 __decorate([

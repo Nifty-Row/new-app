@@ -25,7 +25,7 @@ let ExceptionsFilter = ExceptionsFilter_1 = class ExceptionsFilter {
             message = exception.message;
         }
         if (exception.response) {
-            message = exception.response.message;
+            message = exception.response;
         }
         if (message.indexOf !== undefined) {
             if (message.indexOf('not found') >= 0) {
