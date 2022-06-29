@@ -30,6 +30,13 @@ let UserController = class UserController {
     async update(user, userWalletAddress) {
         return utils_1.ResponseUtils.getSuccessResponse(await this.userService.update(userWalletAddress, user), 'Your profile was updated successfully');
     }
+    async getUserByType(type, page, limit) {
+        return utils_1.ResponseUtils.getSuccessResponse(await this.userService.getUserByType({
+            page,
+            limit,
+            route: '/v3/assets',
+        }, type));
+    }
     async updateProfileImages(images, userWalletAddress) {
         return utils_1.ResponseUtils.getSuccessResponse(await this.userService.uploadProfilePicture(userWalletAddress, images), 'Your profile picture was updated successfully');
     }
@@ -59,6 +66,15 @@ __decorate([
     __metadata("design:paramtypes", [authValidator_1.createUserDto, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)('/get-user-by-type/:type'),
+    __param(0, (0, common_1.Param)('type')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserByType", null);
 __decorate([
     (0, common_1.Put)('/:userWalletAddress/profile-pic'),
     __param(0, (0, common_1.Body)()),

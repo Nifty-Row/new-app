@@ -18,6 +18,7 @@ export declare class AuthService {
     register(userDetails: createUserDto): Promise<Response>;
     login(user: User): Promise<{
         walletAddress: string;
+        userType: string;
     }>;
     validateUser(email: string, password: string): Promise<any>;
 }

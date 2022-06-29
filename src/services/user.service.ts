@@ -10,6 +10,11 @@ import { User } from './../models/user.entity';
 import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UserService {
@@ -54,6 +59,32 @@ export class UserService {
         reject(error);
       }
     });
+  }
+
+  async getUserByEmail(email: string): Promise<any> {
+    try {
+      const userProfile = await this.userRepository
+        .createQueryBuilder('user')
+        .where('user.email = :email', { email })
+        .getOne();
+
+      if (!userProfile) return null;
+
+      return userProfile;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getUserByType(
+    options: IPaginationOptions,
+    type: string
+  ): Promise<Pagination<User>> {
+    const users = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.type = :type', { type });
+
+    return paginate<User>(users, options);
   }
 
   async update(

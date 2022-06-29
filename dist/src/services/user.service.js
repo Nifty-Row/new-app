@@ -23,6 +23,7 @@ const user_entity_1 = require("./../models/user.entity");
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const nestjs_typeorm_paginate_1 = require("nestjs-typeorm-paginate");
 let UserService = class UserService {
     constructor(imageService, authService) {
         this.imageService = imageService;
@@ -46,6 +47,26 @@ let UserService = class UserService {
                 reject(error);
             }
         });
+    }
+    async getUserByEmail(email) {
+        try {
+            const userProfile = await this.userRepository
+                .createQueryBuilder('user')
+                .where('user.email = :email', { email })
+                .getOne();
+            if (!userProfile)
+                return null;
+            return userProfile;
+        }
+        catch (error) {
+            return error;
+        }
+    }
+    async getUserByType(options, type) {
+        const users = await this.userRepository
+            .createQueryBuilder('user')
+            .where('user.type = :type', { type });
+        return (0, nestjs_typeorm_paginate_1.paginate)(users, options);
     }
     async update(userWalletAddress, userDetails) {
         return new Promise(async (resolve, reject) => {

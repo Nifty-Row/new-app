@@ -11,6 +11,7 @@ import {
   Param,
   Put,
   Headers,
+  Query,
 } from '@nestjs/common';
 
 @Controller('users')
@@ -41,6 +42,24 @@ export class UserController {
     return ResponseUtils.getSuccessResponse(
       await this.userService.update(userWalletAddress, user),
       'Your profile was updated successfully'
+    );
+  }
+
+  @Get('/get-user-by-type/:type')
+  async getUserByType(
+    @Param('type') type: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number
+  ): Promise<Response> {
+    return ResponseUtils.getSuccessResponse(
+      await this.userService.getUserByType(
+        {
+          page,
+          limit,
+          route: '/v3/assets',
+        },
+        type
+      )
     );
   }
 

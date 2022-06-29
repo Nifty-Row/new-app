@@ -102,10 +102,11 @@ let AuthService = class AuthService {
     async login(user) {
         return {
             walletAddress: user.walletAddress,
+            userType: user.type,
         };
     }
     async validateUser(email, password) {
-        const user = await this.userService.findOne(email);
+        const user = await this.userService.getUserByEmail(email);
         if (user && (0, utils_1.comparePassword)(password, user.password)) {
             const { password } = user, result = __rest(user, ["password"]);
             return result;
