@@ -195,12 +195,16 @@ export class UserService {
 
     if (!userCurrentPhotos) {
       if (coverImage) {
-        coverImageUrl = await this.imageService.uploadAssetImage(coverImage);
+        coverImageUrl = await this.imageService.uploadAssetImage(
+          coverImage,
+          walletAddress
+        );
       }
 
       if (displayImage) {
         displayImageUrl = await this.imageService.uploadAssetImage(
-          displayImage
+          displayImage,
+          walletAddress
         );
       }
 
@@ -211,14 +215,18 @@ export class UserService {
       });
     } else {
       if (coverImage) {
-        coverImageUrl = await this.imageService.uploadAssetImage(coverImage);
+        coverImageUrl = await this.imageService.uploadAssetImage(
+          coverImage,
+          walletAddress
+        );
       } else {
         coverImageUrl = userCurrentPhotos.coverImage;
       }
 
       if (displayImage) {
         displayImageUrl = await this.imageService.uploadAssetImage(
-          displayImage
+          displayImage,
+          walletAddress
         );
       } else {
         displayImageUrl = userCurrentPhotos.displayImage;

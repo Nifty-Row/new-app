@@ -22,12 +22,13 @@ let ImageService = ImageService_1 = class ImageService {
             api_secret: process.env.CLOUDINARY_API_SECRET,
         });
     }
-    async uploadAssetImage(b64Image) {
+    async uploadAssetImage(b64Image, userWalletAddress) {
         if (b64Image === '11111111111') {
             return 'imageUrl';
         }
         const options = {
             resource_type: 'raw',
+            folder: `images/${userWalletAddress}`,
         };
         const response = await cloudinary_1.v2.uploader.upload(b64Image, options);
         return response.secure_url;
