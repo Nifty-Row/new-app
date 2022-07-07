@@ -116,6 +116,7 @@ export class AuthService {
       walletAddress: user.walletAddress,
       userType: user.type,
       email: user.email,
+      username: user.username,
     };
   }
 
