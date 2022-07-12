@@ -10,3 +10,8 @@ export interface UserSocial {
     pinterestUrl: string;
     discordUrl: string;
 }
+export interface SliderImages {
+    firstSlide: string;
+    secondSlide: string;
+    thirdSlide: string;
+}

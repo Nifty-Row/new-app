@@ -137,10 +137,10 @@ let UserService = class UserService {
         let displayImageUrl = null;
         if (!userCurrentPhotos) {
             if (coverImage) {
-                coverImageUrl = await this.imageService.uploadAssetImage(coverImage, walletAddress);
+                coverImageUrl = await this.imageService.uploadAssetImage(coverImage, `images/${walletAddress}`);
             }
             if (displayImage) {
-                displayImageUrl = await this.imageService.uploadAssetImage(displayImage, walletAddress);
+                displayImageUrl = await this.imageService.uploadAssetImage(displayImage, `images/${walletAddress}`);
             }
             await this.photoRepository.save({
                 walletAddress,
@@ -150,13 +150,13 @@ let UserService = class UserService {
         }
         else {
             if (coverImage) {
-                coverImageUrl = await this.imageService.uploadAssetImage(coverImage, walletAddress);
+                coverImageUrl = await this.imageService.uploadAssetImage(coverImage, `images/${walletAddress}`);
             }
             else {
                 coverImageUrl = userCurrentPhotos.coverImage;
             }
             if (displayImage) {
-                displayImageUrl = await this.imageService.uploadAssetImage(displayImage, walletAddress);
+                displayImageUrl = await this.imageService.uploadAssetImage(displayImage, `images/${walletAddress}`);
             }
             else {
                 displayImageUrl = userCurrentPhotos.displayImage;

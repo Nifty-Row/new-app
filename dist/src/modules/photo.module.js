@@ -6,27 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
-const photo_module_1 = require("./modules/photo.module");
-const contact_module_1 = require("./modules/contact.module");
+exports.PhotoModule = void 0;
+const admin_service_1 = require("./../services/admin.service");
+const sliderImage_entity_1 = require("./../models/sliderImage.entity");
+const photo_controller_1 = require("./../controllers/photo.controller");
+const auth_module_1 = require("./auth.module");
 const typeorm_1 = require("@nestjs/typeorm");
-const config_1 = require("@nestjs/config");
-const user_module_1 = require("./modules/user.module");
-const auth_module_1 = require("./modules/auth.module");
 const common_1 = require("@nestjs/common");
-let AppModule = class AppModule {
+let PhotoModule = class PhotoModule {
 };
-AppModule = __decorate([
+PhotoModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            auth_module_1.AuthModule,
-            user_module_1.UserModule,
-            contact_module_1.ContactModule,
-            photo_module_1.PhotoModule,
-            config_1.ConfigModule.forRoot({ isGlobal: true }),
-            typeorm_1.TypeOrmModule.forRoot(),
+            typeorm_1.TypeOrmModule.forFeature([sliderImage_entity_1.SliderImage]),
+            (0, common_1.forwardRef)(() => auth_module_1.AuthModule),
         ],
+        controllers: [photo_controller_1.PhotoController],
+        providers: [admin_service_1.AdminService],
     })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+], PhotoModule);
+exports.PhotoModule = PhotoModule;
+//# sourceMappingURL=photo.module.js.map

@@ -1,6 +1,6 @@
 import { contactDTO } from './../validators/contactValidator';
 import { ContactService } from './../services/contact.service';
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { Response, ResponseUtils } from 'utils';
 
 @Controller('contact')

@@ -1,14 +1,10 @@
-import { UserPhoto } from './userPhoto.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Social } from './social.entity';
 
 @Entity()
 export class User {

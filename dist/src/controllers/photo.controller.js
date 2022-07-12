@@ -8,18 +8,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PhotoController = void 0;
-const image_service_1 = require("../services/image.service");
+const admin_service_1 = require("./../services/admin.service");
+const utils_1 = require("./../../utils");
 const common_1 = require("@nestjs/common");
 let PhotoController = class PhotoController {
-    constructor(imageService) {
-        this.imageService = imageService;
+    constructor(adminService) {
+        this.adminService = adminService;
+    }
+    async updateProfileImages(images) {
+        return utils_1.ResponseUtils.getSuccessResponse(await this.adminService.uploadSliderImage(images));
     }
 };
+__decorate([
+    (0, common_1.Post)('/slider-images'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PhotoController.prototype, "updateProfileImages", null);
 PhotoController = __decorate([
     (0, common_1.Controller)('photos'),
-    __metadata("design:paramtypes", [image_service_1.ImageService])
+    __metadata("design:paramtypes", [admin_service_1.AdminService])
 ], PhotoController);
 exports.PhotoController = PhotoController;
 //# sourceMappingURL=photo.controller.js.map

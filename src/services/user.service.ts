@@ -197,14 +197,14 @@ export class UserService {
       if (coverImage) {
         coverImageUrl = await this.imageService.uploadAssetImage(
           coverImage,
-          walletAddress
+          `images/${walletAddress}`
         );
       }
 
       if (displayImage) {
         displayImageUrl = await this.imageService.uploadAssetImage(
           displayImage,
-          walletAddress
+          `images/${walletAddress}`
         );
       }
 
@@ -217,7 +217,7 @@ export class UserService {
       if (coverImage) {
         coverImageUrl = await this.imageService.uploadAssetImage(
           coverImage,
-          walletAddress
+          `images/${walletAddress}`
         );
       } else {
         coverImageUrl = userCurrentPhotos.coverImage;
@@ -226,7 +226,7 @@ export class UserService {
       if (displayImage) {
         displayImageUrl = await this.imageService.uploadAssetImage(
           displayImage,
-          walletAddress
+          `images/${walletAddress}`
         );
       } else {
         displayImageUrl = userCurrentPhotos.displayImage;

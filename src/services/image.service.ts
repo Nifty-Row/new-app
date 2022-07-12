@@ -12,16 +12,13 @@ export class ImageService {
     });
   }
 
-  async uploadAssetImage(
-    b64Image: string,
-    userWalletAddress: string
-  ): Promise<string> {
+  async uploadAssetImage(b64Image: string, folder: string): Promise<string> {
     if (b64Image === '11111111111') {
       return 'imageUrl';
     }
     const options: UploadApiOptions = {
       resource_type: 'raw',
-      folder: `images/${userWalletAddress}`,
+      folder,
     };
 
     const response: UploadApiResponse = await v2.uploader.upload(

@@ -1,5 +1,8 @@
-import { ImageService } from '../services/image.service';
+import { AdminService } from './../services/admin.service';
+import { Response } from './../../utils';
+import { SliderImages } from './../interfaces';
 export declare class PhotoController {
-    private imageService;
-    constructor(imageService: ImageService);
+    private adminService;
+    constructor(adminService: AdminService);
+    updateProfileImages(images: SliderImages): Promise<Response>;
 }
