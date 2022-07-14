@@ -92,7 +92,7 @@ let UserService = class UserService {
                     email: email.toLocaleLowerCase(),
                     walletAddress,
                     about,
-                    type: type ? type : 'fiat-user',
+                    type: type ? type : 'collector',
                     password: password != '' || password != null ? (0, utils_1.hashPassword)(password) : '',
                     webUrl,
                 });

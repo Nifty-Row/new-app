@@ -46,7 +46,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "walletAddress", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: 'fiat-user' }),
+    (0, typeorm_1.Column)({ default: 'collector' }),
     __metadata("design:type", String)
 ], User.prototype, "type", void 0);
 __decorate([

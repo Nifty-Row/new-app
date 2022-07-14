@@ -134,7 +134,7 @@ export class UserService {
             email: email.toLocaleLowerCase(),
             walletAddress,
             about,
-            type: type ? type : 'fiat-user',
+            type: type ? type : 'collector',
             password:
               password != '' || password != null ? hashPassword(password) : '',
             webUrl,

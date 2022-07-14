@@ -32,7 +32,7 @@ export class User {
   @Column({ type: 'varchar', length: 255, unique: true })
   walletAddress: string;
 
-  @Column({ default: 'fiat-user' })
+  @Column({ default: 'collector' })
   type: string;
 
   @Column({ nullable: false, type: 'varchar', length: 255 })
