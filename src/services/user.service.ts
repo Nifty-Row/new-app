@@ -82,7 +82,13 @@ export class UserService {
   ): Promise<Pagination<User>> {
     const users = await this.userRepository
       .createQueryBuilder('user')
-      .where('user.type = :type', { type });
+      .where('user.type = :type', { type })
+      .leftJoinAndMapOne(
+        'user.photo',
+        UserPhoto,
+        'photo',
+        'photo.walletAddress = user.walletAddress'
+      );
 
     return paginate<User>(users, options);
   }

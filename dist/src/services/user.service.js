@@ -65,7 +65,8 @@ let UserService = class UserService {
     async getUserByType(options, type) {
         const users = await this.userRepository
             .createQueryBuilder('user')
-            .where('user.type = :type', { type });
+            .where('user.type = :type', { type })
+            .leftJoinAndMapOne('user.photo', userPhoto_entity_1.UserPhoto, 'photo', 'photo.walletAddress = user.walletAddress');
         return (0, nestjs_typeorm_paginate_1.paginate)(users, options);
     }
     async update(userWalletAddress, userDetails) {
