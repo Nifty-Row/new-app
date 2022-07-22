@@ -1,3 +1,4 @@
+import { BankInfoModule } from './modules/bank.module';
 import { PhotoModule } from './modules/photo.module';
 import { ContactModule } from './modules/contact.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,6 +13,7 @@ import { Module } from '@nestjs/common';
     UserModule,
     ContactModule,
     PhotoModule,
+    BankInfoModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(),
   ],

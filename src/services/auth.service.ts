@@ -76,7 +76,7 @@ export class AuthService {
       password: hashPassword(password),
       walletAddress,
       about,
-      type,
+      type: type ? type : 'collector',
       joinDate,
       webUrl,
     });
