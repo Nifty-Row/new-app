@@ -93,6 +93,15 @@ export class UserService {
     return paginate<User>(users, options);
   }
 
+  async updateUserType(walletAddress: string): Promise<boolean> {
+    const user = await this.userRepository.update(
+      { walletAddress },
+      { type: 'gallery' }
+    );
+
+    return true;
+  }
+
   async update(
     userWalletAddress: string,
     userDetails: createUserDto

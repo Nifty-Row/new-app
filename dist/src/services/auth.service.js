@@ -72,7 +72,7 @@ let AuthService = class AuthService {
             password: (0, utils_1.hashPassword)(password),
             walletAddress,
             about,
-            type,
+            type: type ? type : 'collector',
             joinDate,
             webUrl,
         });

@@ -69,6 +69,10 @@ let UserService = class UserService {
             .leftJoinAndMapOne('user.photo', userPhoto_entity_1.UserPhoto, 'photo', 'photo.walletAddress = user.walletAddress');
         return (0, nestjs_typeorm_paginate_1.paginate)(users, options);
     }
+    async updateUserType(walletAddress) {
+        const user = await this.userRepository.update({ walletAddress }, { type: 'gallery' });
+        return true;
+    }
     async update(userWalletAddress, userDetails) {
         return new Promise(async (resolve, reject) => {
             try {

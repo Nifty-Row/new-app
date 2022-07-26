@@ -74,6 +74,16 @@ export class UserController {
     );
   }
 
+  @Put('/:userWalletAddress/type')
+  async updateUserType(
+    @Param('userWalletAddress') userWalletAddress: string
+  ): Promise<Response> {
+    return ResponseUtils.getSuccessResponse(
+      await this.userService.updateUserType(userWalletAddress),
+      'user type was updated successfully'
+    );
+  }
+
   @Post('follow/:followUserAddress')
   async follow(
     @Param('followUserAddress') followUserAddress: string,

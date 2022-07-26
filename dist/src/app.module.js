@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const bank_module_1 = require("./modules/bank.module");
 const photo_module_1 = require("./modules/photo.module");
 const contact_module_1 = require("./modules/contact.module");
 const typeorm_1 = require("@nestjs/typeorm");
@@ -23,6 +24,7 @@ AppModule = __decorate([
             user_module_1.UserModule,
             contact_module_1.ContactModule,
             photo_module_1.PhotoModule,
+            bank_module_1.BankInfoModule,
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             typeorm_1.TypeOrmModule.forRoot(),
         ],

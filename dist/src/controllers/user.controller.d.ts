@@ -10,5 +10,6 @@ export declare class UserController {
     update(user: createUserDto, userWalletAddress: string): Promise<Response>;
     getUserByType(type: string, page: number, limit: number): Promise<Response>;
     updateProfileImages(images: UserPhotoInterface, userWalletAddress: string): Promise<Response>;
+    updateUserType(userWalletAddress: string): Promise<Response>;
     follow(followUserAddress: string, req: any, userWalletAddress: any): Promise<Response>;
 }

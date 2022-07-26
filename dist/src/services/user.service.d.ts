@@ -17,6 +17,7 @@ export declare class UserService {
     findOne(userWalletAddress: string): Promise<User>;
     getUserByEmail(email: string): Promise<any>;
     getUserByType(options: IPaginationOptions, type: string): Promise<Pagination<User>>;
+    updateUserType(walletAddress: string): Promise<boolean>;
     update(userWalletAddress: string, userDetails: createUserDto): Promise<object>;
     follow(userAddress: string, followUserAddress: string): Promise<string>;
     uploadProfilePicture(walletAddress: string, images: UserPhotoInterface): Promise<{
