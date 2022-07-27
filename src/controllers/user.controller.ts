@@ -34,7 +34,7 @@ export class UserController {
     );
   }
 
-  @Put('/:userWalletAddress')
+  @Post('/:userWalletAddress')
   async update(
     @Body() user: createUserDto,
     @Param('userWalletAddress') userWalletAddress: string
@@ -63,7 +63,7 @@ export class UserController {
     );
   }
 
-  @Put('/:userWalletAddress/profile-pic')
+  @Post('/:userWalletAddress/profile-pic')
   async updateProfileImages(
     @Body() images: UserPhotoInterface,
     @Param('userWalletAddress') userWalletAddress: string
@@ -74,7 +74,7 @@ export class UserController {
     );
   }
 
-  @Put('/:userWalletAddress/type')
+  @Post('/:userWalletAddress/type')
   async updateUserType(
     @Param('userWalletAddress') userWalletAddress: string
   ): Promise<Response> {

@@ -46,7 +46,7 @@ export class BankInfoController {
     }
   }
 
-  @Put('update-bank-info')
+  @Post('update-bank-info')
   async updateBankInfo(
     @Body() userBankInfo: addBankInfoDto
   ): Promise<Response> {
