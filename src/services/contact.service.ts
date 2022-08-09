@@ -42,4 +42,24 @@ export class ContactService {
       data: [],
     };
   }
+
+  async getMessages(): Promise<Response> {
+    const messages = await this.contactUsRepository.find();
+
+    return {
+      status: 'success',
+      message: '',
+      data: messages,
+    };
+  }
+
+  async getSubscribers(): Promise<Response> {
+    const subscribers = await this.newsletterRepository.find();
+
+    return {
+      status: 'success',
+      message: '',
+      data: subscribers,
+    };
+  }
 }

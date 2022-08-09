@@ -1,6 +1,6 @@
 import { contactDTO } from './../validators/contactValidator';
 import { ContactService } from './../services/contact.service';
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { Response, ResponseUtils } from 'utils';
 
 @Controller('contact')
@@ -31,6 +31,28 @@ export class ContactController {
         return ResponseUtils.getErrorResponse(message, data);
 
       return ResponseUtils.getSuccessResponse(data, message);
+    } catch (error) {
+      return ResponseUtils.getErrorResponse(error.message, []);
+    }
+  }
+
+  @Get('messages')
+  async getMessages(): Promise<Response> {
+    try {
+      const data = await this.contactService.getMessages();
+
+      return ResponseUtils.getSuccessResponse(data);
+    } catch (error) {
+      return ResponseUtils.getErrorResponse(error.message, []);
+    }
+  }
+
+  @Get('subscribers')
+  async getSubscribers(): Promise<Response> {
+    try {
+      const data = await this.contactService.getSubscribers();
+
+      return ResponseUtils.getSuccessResponse(data);
     } catch (error) {
       return ResponseUtils.getErrorResponse(error.message, []);
     }
