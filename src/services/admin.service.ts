@@ -52,4 +52,58 @@ export class AdminService {
 
     return { firstSlideImageUrl, secondSlideImageUrl, thirdSlideImageUrl };
   }
+
+  async updateSliderImage(images: SliderImages): Promise<any> {
+    const { firstSlide, secondSlide, thirdSlide } = images;
+
+    const currentImages = await this.sliderImageRepository.find();
+
+    let firstSlideImageUrl = null;
+    let secondSlideImageUrl = null;
+    let thirdSlideImageUrl = null;
+
+    if (firstSlide) {
+      firstSlideImageUrl = await this.imageService.uploadAssetImage(
+        firstSlide,
+        `images/slider`
+      );
+
+      await this.sliderImageRepository.update(
+        { id: currentImages[-1].id },
+        { firstSlide: firstSlideImageUrl }
+      );
+    }
+
+    if (secondSlide) {
+      secondSlideImageUrl = await this.imageService.uploadAssetImage(
+        secondSlide,
+        `images/slider`
+      );
+
+      await this.sliderImageRepository.update(
+        { id: currentImages[-1].id },
+        { secondSlide: secondSlideImageUrl }
+      );
+    }
+
+    if (thirdSlide) {
+      thirdSlideImageUrl = await this.imageService.uploadAssetImage(
+        thirdSlide,
+        `images/slider`
+      );
+
+      await this.sliderImageRepository.update(
+        { id: currentImages[-1].id },
+        { thirdSlide: thirdSlideImageUrl }
+      );
+    }
+
+    return { status: true, message: 'Image(s) updated successfully' };
+  }
+
+  async getAll(): Promise<any> {
+    const images = await this.sliderImageRepository.find();
+
+    return { images };
+  }
 }

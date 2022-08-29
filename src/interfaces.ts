@@ -13,7 +13,7 @@ export interface UserSocial {
 }
 
 export interface SliderImages {
-  firstSlide: string;
-  secondSlide: string;
-  thirdSlide: string;
+  firstSlide?: string;
+  secondSlide?: string;
+  thirdSlide?: string;
 }
