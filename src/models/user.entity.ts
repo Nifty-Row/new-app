@@ -1,3 +1,4 @@
+import { Role } from 'src/interfaces';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -43,6 +44,9 @@ export class User {
 
   @Column({ nullable: true })
   webUrl: string;
+
+  @Column()
+  role: Role;
 
   @CreateDateColumn()
   created_at: Date;

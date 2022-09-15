@@ -1,3 +1,4 @@
+import { ShippingInfo } from './../models/shippingInfo.entity';
 import { AuthModule } from './auth.module';
 import { UserFollower } from './../models/userFollower.entity';
 import { Social } from './../models/social.entity';
@@ -10,7 +11,13 @@ import { UserPhoto } from 'src/models/userPhoto.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Social, UserFollower, UserPhoto]),
+    TypeOrmModule.forFeature([
+      User,
+      Social,
+      UserFollower,
+      UserPhoto,
+      ShippingInfo,
+    ]),
     forwardRef(() => AuthModule),
   ],
   controllers: [UserController],

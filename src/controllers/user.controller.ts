@@ -1,3 +1,4 @@
+import { ShippingInfo } from './../models/shippingInfo.entity';
 import { UserPhoto as UserPhotoInterface } from 'src/interfaces';
 import { createUserDto } from './../validators/authValidator';
 import { ResponseUtils, Response } from '../../utils';
@@ -92,6 +93,27 @@ export class UserController {
   ) {
     return ResponseUtils.getSuccessResponse(
       await this.userService.follow(userWalletAddress, followUserAddress)
+    );
+  }
+
+  @Post('add-shipping-info')
+  async addShippingInfo(
+    @Request() req,
+    @Headers('walletAddress') userWalletAddress,
+    @Body() body: ShippingInfo
+  ) {
+    return ResponseUtils.getSuccessResponse(
+      await this.userService.addShippingInfo(userWalletAddress, body)
+    );
+  }
+
+  @Get('get-shipping-info')
+  async getShippingInfo(
+    @Request() req,
+    @Headers('walletAddress') userWalletAddress
+  ) {
+    return ResponseUtils.getSuccessResponse(
+      await this.userService.getShippingInfo(userWalletAddress)
     );
   }
 }

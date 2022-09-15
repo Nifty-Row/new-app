@@ -17,3 +17,9 @@ export interface SliderImages {
   secondSlide?: string;
   thirdSlide?: string;
 }
+
+export enum Role {
+  User = 'user',
+  Admin = 'admin',
+  SuperAdmin = 'super-admin',
+}

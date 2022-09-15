@@ -1,3 +1,5 @@
+import { Social } from './../models/social.entity';
+import { User } from './../models/user.entity';
 import { ImageService } from 'src/services/image.service';
 import { SliderImages } from './../interfaces';
 import { Injectable } from '@nestjs/common';
@@ -7,8 +9,12 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class AdminService {
+  @InjectRepository(User) private userRepository: Repository<User>;
+
   @InjectRepository(SliderImage)
   private sliderImageRepository: Repository<SliderImage>;
+
+  @InjectRepository(Social) private socialRepository: Repository<Social>;
 
   constructor(private imageService: ImageService) {}
 
@@ -105,5 +111,11 @@ export class AdminService {
     const images = await this.sliderImageRepository.find();
 
     return { images };
+  }
+
+  async getAllUsers(): Promise<any> {
+    const users = await this.userRepository.find({});
+
+    return { users };
   }
 }

@@ -1,3 +1,4 @@
+import { ShippingInfo } from './../models/shippingInfo.entity';
 import { UserPhoto as UserPhotoInterface } from 'src/interfaces';
 import { AuthService } from '../services/auth.service';
 import { hashPassword } from './../../utils';
@@ -23,6 +24,8 @@ export class UserService {
   @InjectRepository(UserFollower)
   private userFollower: Repository<UserFollower>;
   @InjectRepository(UserPhoto) photoRepository: Repository<UserPhoto>;
+  @InjectRepository(ShippingInfo)
+  shippingInfoRepository: Repository<ShippingInfo>;
 
   constructor(
     private imageService: ImageService,
@@ -256,5 +259,39 @@ export class UserService {
     }
 
     return { coverImageUrl, displayImageUrl };
+  }
+
+  async addShippingInfo(userWalletAddress: string, details: ShippingInfo) {
+    const userExists = await this.userRepository.find({
+      walletAddress: userWalletAddress,
+    });
+
+    if (!userExists)
+      return {
+        status: 'failed',
+        message: 'user does not exist',
+      };
+
+    const shippingInfo = await this.shippingInfoRepository.create(details);
+
+    return {
+      status: 'success',
+      message: 'shipping info stored successfully',
+      data: shippingInfo,
+    };
+  }
+
+  async getShippingInfo(userWalletAddress: string) {
+    const shippingInfo = await this.shippingInfoRepository.find({
+      userWalletAddress,
+    });
+
+    if (!shippingInfo)
+      return {
+        status: 'failed',
+        message: 'you do not have any shipping information',
+      };
+
+    return { shippingInfo };
   }
 }

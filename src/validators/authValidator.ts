@@ -9,7 +9,7 @@ import {
   IsUrl,
   Matches,
 } from 'class-validator';
-import { UserSocial } from 'src/interfaces';
+import { Role, UserSocial } from 'src/interfaces';
 
 export class createUserDto {
   @IsNotEmpty()
@@ -48,6 +48,8 @@ export class createUserDto {
   password?: string;
 
   type?: string;
+
+  role?: Role;
 }
 
 export class loginUserDto {

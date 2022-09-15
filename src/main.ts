@@ -10,14 +10,14 @@ async function bootstrap() {
     logger: ['error', 'warn', 'debug', 'log', 'verbose'],
   });
 
-  // const config = new DocumentBuilder()
-  //   .setTitle('Yasuke Auth App')
-  //   .setDescription('The Yasuke Auth App API documentation')
-  //   .setVersion('1.0')
-  //   .addTag('yasuke')
-  //   .build();
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api', app, document);
+  const config = new DocumentBuilder()
+    .setTitle('Yasuke Auth App')
+    .setDescription('The Yasuke Auth App API documentation')
+    .setVersion('1.0')
+    .addTag('yasuke')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());

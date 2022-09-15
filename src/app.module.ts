@@ -1,5 +1,5 @@
+import { AdminModule } from './modules/admin.module';
 import { BankInfoModule } from './modules/bank.module';
-import { PhotoModule } from './modules/photo.module';
 import { ContactModule } from './modules/contact.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -12,8 +12,8 @@ import { Module } from '@nestjs/common';
     AuthModule,
     UserModule,
     ContactModule,
-    PhotoModule,
     BankInfoModule,
+    AdminModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(),
   ],

@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from 'src/interfaces';
 
 @Injectable()
 export class AuthService {
@@ -37,6 +38,7 @@ export class AuthService {
       type,
       social,
       webUrl,
+      role,
     } = userDetails;
 
     let joinDate = new Date();
@@ -79,6 +81,7 @@ export class AuthService {
       type: type ? type : 'collector',
       joinDate,
       webUrl,
+      role: role ? role : Role.User,
     });
 
     if (social) {
@@ -100,6 +103,7 @@ export class AuthService {
       about,
       social,
       webUrl,
+      role,
     };
 
     const response = {
@@ -117,6 +121,8 @@ export class AuthService {
       userType: user.type,
       email: user.email,
       username: user.username,
+      role: user.role,
+      access_token: this.jwtService.sign(user),
     };
   }
 
