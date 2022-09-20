@@ -17,10 +17,8 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/interfaces';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('admin')
-@ApiTags('Admin')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AdminController {
   constructor(
