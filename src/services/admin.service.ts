@@ -1,3 +1,4 @@
+import { Newsletter } from './../models/contant.entity';
 import { Social } from './../models/social.entity';
 import { User } from './../models/user.entity';
 import { ImageService } from 'src/services/image.service';
@@ -10,6 +11,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AdminService {
   @InjectRepository(User) private userRepository: Repository<User>;
+  @InjectRepository(Newsletter) newsletterRepository: Repository<Newsletter>;
 
   @InjectRepository(SliderImage)
   private sliderImageRepository: Repository<SliderImage>;
@@ -117,5 +119,29 @@ export class AdminService {
     const users = await this.userRepository.find({});
 
     return { users };
+  }
+
+  async changeSubscriberStatus(details: any): Promise<any> {
+    const subscriberExists = await this.newsletterRepository.findOne({
+      email: details.email,
+    });
+
+    if (!subscriberExists)
+      return {
+        status: 'failed',
+        message: 'subscriber does not exist',
+        data: [],
+      };
+
+    await this.newsletterRepository.update(
+      { email: details.email },
+      { status: details.status }
+    );
+
+    return {
+      status: 'success',
+      message: "",
+      data: [],
+    };
   }
 }

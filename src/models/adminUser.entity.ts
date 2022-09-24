@@ -6,6 +6,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum Role {
+  ADMIN = 'admin',
+  SUPER_ADMIN = 'super-admin',
+}
+
 @Entity()
 export class AdminUser {
   @PrimaryGeneratedColumn()
@@ -23,8 +28,12 @@ export class AdminUser {
   @Column({ type: 'varchar', length: 255, nullable: true })
   password: string;
 
-  @Column({ enum: ['admin', 'super-admin'] })
-  role: string;
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.ADMIN,
+  })
+  role: Role;
 
   @CreateDateColumn()
   created_at: Date;

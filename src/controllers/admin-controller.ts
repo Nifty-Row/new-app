@@ -1,3 +1,4 @@
+import { ContactService } from './../services/contact.service';
 import { SliderImages } from './../interfaces';
 import { createUserDto } from './../validators/authValidator';
 import { AuthService } from './../services/auth.service';
@@ -23,7 +24,8 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 export class AdminController {
   constructor(
     private adminService: AdminService,
-    private authService: AuthService
+    private authService: AuthService,
+    private contactService: ContactService
   ) {}
 
   @Get('all-users')
@@ -72,5 +74,38 @@ export class AdminController {
   @Roles(Role.Admin, Role.SuperAdmin)
   async getAll(): Promise<Response> {
     return ResponseUtils.getSuccessResponse(await this.adminService.getAll());
+  }
+
+  @Get('messages')
+  @Roles(Role.Admin, Role.SuperAdmin)
+  async getMessages(): Promise<Response> {
+    try {
+      const data = await this.contactService.getMessages();
+
+      return ResponseUtils.getSuccessResponse(data);
+    } catch (error) {
+      return ResponseUtils.getErrorResponse(error.message, []);
+    }
+  }
+
+  @Get('subscribers')
+  @Roles(Role.Admin, Role.SuperAdmin)
+  async getSubscribers(): Promise<Response> {
+    try {
+      const { data, message, status } =
+        await this.contactService.getSubscribers();
+
+      return ResponseUtils.getSuccessResponse(data, message);
+    } catch (error) {
+      return ResponseUtils.getErrorResponse(error.message, []);
+    }
+  }
+
+  @Post('change-subscriber-status')
+  @Roles(Role.Admin, Role.SuperAdmin)
+  async changeSubscriberStatus(@Body() body: any): Promise<Response> {
+    return ResponseUtils.getSuccessResponse(
+      await this.adminService.changeSubscriberStatus(body)
+    );
   }
 }

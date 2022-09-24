@@ -1,3 +1,5 @@
+import { ContactUs, Newsletter } from './../models/contant.entity';
+import { ContactService } from './../services/contact.service';
 import { AuthModule } from './auth.module';
 import { AdminService } from './../services/admin.service';
 import { SliderImage } from './../models/sliderImage.entity';
@@ -11,12 +13,18 @@ import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([SliderImage, User, Social]),
+    TypeOrmModule.forFeature([
+      SliderImage,
+      User,
+      Social,
+      Newsletter,
+      ContactUs,
+    ]),
     ConfigModule.forRoot(),
     AuthModule,
   ],
   controllers: [AdminController],
-  providers: [AdminService, ImageService],
+  providers: [AdminService, ImageService, ContactService],
   exports: [AdminService],
 })
 export class AdminModule {}

@@ -1,6 +1,6 @@
 import { contactDTO } from './../validators/contactValidator';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContactUs, Newsletter } from './../models/contant.entity';
+import { ContactUs, Newsletter, Status } from './../models/contant.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Response } from 'utils';
@@ -22,7 +22,7 @@ export class ContactService {
     };
   }
 
-  async subscribeTONewsletter(email: string): Promise<Response> {
+  async subscribeToNewsletter(email: string): Promise<Response> {
     const alreadySubscribed = await this.newsletterRepository.findOne({
       email,
     });
@@ -34,7 +34,7 @@ export class ContactService {
         data: [],
       };
 
-    await this.newsletterRepository.save({ email });
+    await this.newsletterRepository.save({ email, status: Status.SUBSCRIBED });
 
     return {
       status: 'success',
@@ -45,6 +45,13 @@ export class ContactService {
 
   async getMessages(): Promise<Response> {
     const messages = await this.contactUsRepository.find();
+
+    if (messages.length < 1)
+      return {
+        status: 'success',
+        message: 'no messages',
+        data: [],
+      };
 
     return {
       status: 'success',
