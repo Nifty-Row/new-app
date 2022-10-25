@@ -16,9 +16,23 @@ export class addBankInfoDto {
 
   @IsNotEmpty()
   @IsString()
-  bankShortCode: string;
+  bankSortCode: string;
 
   @IsNotEmpty()
   @IsEthereumAddress()
   userWalletAddress: string;
+
+  @IsString()
+  bankAddress?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  accountName: string;
+
+  @IsString()
+  IBANNumber?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  accountHolderAddress: string;
 }

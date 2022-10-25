@@ -14,11 +14,23 @@ export class BankInfo {
   @Column()
   bankName: string;
 
+  @Column({ nullable: true })
+  bankAddress?: string;
+
+  @Column()
+  accountName: string;
+
   @Column()
   bankAccountNumber: number;
 
   @Column()
-  bankShortCode: string;
+  bankSortCode: string;
+
+  @Column({ nullable: true })
+  IBANNumber?: string;
+
+  @Column()
+  accountHolderAddress: string;
 
   @Column()
   userWalletAddress: string;

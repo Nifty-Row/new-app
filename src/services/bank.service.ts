@@ -10,15 +10,7 @@ export class BankInfoService {
   @InjectRepository(BankInfo) bankInfoRepository: Repository<BankInfo>;
 
   async addBankInfo(data: addBankInfoDto): Promise<Response> {
-    const { bankAccountNumber, bankShortCode, bankName, userWalletAddress } =
-      data;
-
-    const bankInfo = await this.bankInfoRepository.save({
-      bankName,
-      bankAccountNumber,
-      bankShortCode,
-      userWalletAddress,
-    });
+    const bankInfo = await this.bankInfoRepository.save(data);
 
     return {
       data: bankInfo,
@@ -48,11 +40,8 @@ export class BankInfoService {
   }
 
   async editBankInfo(data: addBankInfoDto): Promise<Response> {
-    const { bankAccountNumber, bankShortCode, bankName, userWalletAddress } =
-      data;
-
     const currentBankInfo = await this.bankInfoRepository.findOne({
-      userWalletAddress,
+      userWalletAddress: data.userWalletAddress,
     });
 
     if (!currentBankInfo) {
@@ -65,12 +54,7 @@ export class BankInfoService {
 
     const bankInfo = await this.bankInfoRepository.update(
       { id: currentBankInfo.id },
-      {
-        bankName,
-        bankAccountNumber,
-        bankShortCode,
-        userWalletAddress,
-      }
+      data
     );
 
     return {

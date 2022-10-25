@@ -70,19 +70,19 @@ export class AdminController {
     );
   }
 
-  @Get()
+  @Get('/slider-images')
   @Roles(Role.Admin, Role.SuperAdmin)
   async getAll(): Promise<Response> {
-    return ResponseUtils.getSuccessResponse(await this.adminService.getAll());
+    return ResponseUtils.getSuccessResponse(await this.adminService.getAllSliderImages());
   }
 
   @Get('messages')
   @Roles(Role.Admin, Role.SuperAdmin)
   async getMessages(): Promise<Response> {
     try {
-      const data = await this.contactService.getMessages();
+      const { data, message, status } = await this.contactService.getMessages();
 
-      return ResponseUtils.getSuccessResponse(data);
+      return ResponseUtils.getSuccessResponse(data, message);
     } catch (error) {
       return ResponseUtils.getErrorResponse(error.message, []);
     }

@@ -35,7 +35,7 @@ export class UserController {
     );
   }
 
-  @Post('/:userWalletAddress')
+  @Post(':userWalletAddress')
   async update(
     @Body() user: createUserDto,
     @Param('userWalletAddress') userWalletAddress: string

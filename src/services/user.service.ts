@@ -122,6 +122,7 @@ export class UserService {
           type,
           social,
           webUrl,
+          phoneNumber,
         } = userDetails;
 
         let user = await this.userRepository
@@ -136,7 +137,7 @@ export class UserService {
 
           if (status == 'failed') reject({ message });
 
-          resolve({ message, status, data });
+          resolve({ ...data });
         }
 
         if (social) {
@@ -156,6 +157,7 @@ export class UserService {
             password:
               password != '' || password != null ? hashPassword(password) : '',
             webUrl,
+            phoneNumber,
           }
         );
 
@@ -274,11 +276,7 @@ export class UserService {
 
     const shippingInfo = await this.shippingInfoRepository.create(details);
 
-    return {
-      status: 'success',
-      message: 'shipping info stored successfully',
-      data: shippingInfo,
-    };
+    return shippingInfo;
   }
 
   async getShippingInfo(userWalletAddress: string) {

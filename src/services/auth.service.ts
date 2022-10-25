@@ -39,6 +39,7 @@ export class AuthService {
       social,
       webUrl,
       role,
+      phoneNumber,
     } = userDetails;
 
     let joinDate = new Date();
@@ -82,6 +83,7 @@ export class AuthService {
       joinDate,
       webUrl,
       role: role ? role : Role.User,
+      phoneNumber,
     });
 
     if (social) {
@@ -104,6 +106,7 @@ export class AuthService {
       social,
       webUrl,
       role,
+      phoneNumber,
     };
 
     const response = {

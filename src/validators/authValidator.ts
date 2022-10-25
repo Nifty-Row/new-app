@@ -45,6 +45,9 @@ export class createUserDto {
   @IsObject()
   social: UserSocial;
 
+  @IsString()
+  phoneNumber: string;
+
   password?: string;
 
   type?: string;

@@ -64,7 +64,11 @@ export class AdminService {
   async updateSliderImage(images: SliderImages): Promise<any> {
     const { firstSlide, secondSlide, thirdSlide } = images;
 
-    const currentImages = await this.sliderImageRepository.find();
+    const currentImages = await this.sliderImageRepository.find({ id: 1 });
+
+    if (currentImages.length < 1) {
+      return { status: 'failed', message: 'no images' };
+    }
 
     let firstSlideImageUrl = null;
     let secondSlideImageUrl = null;
@@ -77,7 +81,7 @@ export class AdminService {
       );
 
       await this.sliderImageRepository.update(
-        { id: currentImages[-1].id },
+        { id: currentImages[0].id },
         { firstSlide: firstSlideImageUrl }
       );
     }
@@ -89,7 +93,7 @@ export class AdminService {
       );
 
       await this.sliderImageRepository.update(
-        { id: currentImages[-1].id },
+        { id: currentImages[0].id },
         { secondSlide: secondSlideImageUrl }
       );
     }
@@ -101,7 +105,7 @@ export class AdminService {
       );
 
       await this.sliderImageRepository.update(
-        { id: currentImages[-1].id },
+        { id: currentImages[0].id },
         { thirdSlide: thirdSlideImageUrl }
       );
     }
@@ -109,8 +113,8 @@ export class AdminService {
     return { status: true, message: 'Image(s) updated successfully' };
   }
 
-  async getAll(): Promise<any> {
-    const images = await this.sliderImageRepository.find();
+  async getAllSliderImages(): Promise<any> {
+    const images = await this.sliderImageRepository.find({ id: 1 });
 
     return { images };
   }
@@ -140,7 +144,7 @@ export class AdminService {
 
     return {
       status: 'success',
-      message: "",
+      message: '',
       data: [],
     };
   }

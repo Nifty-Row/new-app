@@ -1,3 +1,5 @@
+import { ImageModule } from './modules/image.module';
+import { ShippingInfoModule } from './modules/shipping-info.module';
 import { AdminModule } from './modules/admin.module';
 import { BankInfoModule } from './modules/bank.module';
 import { ContactModule } from './modules/contact.module';
@@ -14,6 +16,8 @@ import { Module } from '@nestjs/common';
     ContactModule,
     BankInfoModule,
     AdminModule,
+    ShippingInfoModule,
+    ImageModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(),
   ],
